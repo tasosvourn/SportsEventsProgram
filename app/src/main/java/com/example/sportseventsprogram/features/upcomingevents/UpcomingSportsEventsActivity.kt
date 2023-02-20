@@ -28,6 +28,7 @@ class UpcomingSportsEventsActivity : BaseActivity() {
 
         viewModel.upcomingEvents.collect(this) {
             Log.d("events", "list fetched")
+            viewModel.startTimers()
             sportsAdapter.items = it
             sportsAdapter.notifyDataSetChanged()
         }

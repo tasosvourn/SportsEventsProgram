@@ -1,5 +1,7 @@
 package com.example.sportseventsprogram.features.upcomingevents
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.DomainResult
@@ -11,6 +13,7 @@ import com.example.sportseventsprogram.common.adapterdelegates.RowUiItem
 import com.example.sportseventsprogram.features.upcomingevents.adapterdelegates.EventEventHandler
 import com.example.sportseventsprogram.features.upcomingevents.adapterdelegates.SportEventHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,6 +34,9 @@ class UpcomingEventsViewModel @Inject constructor(
     var dataChangedIndex = _dataChangedIndex.asStateFlow()
 
     val uiList = mutableListOf<RowUiItem>()
+
+    private val handler = Handler(Looper.getMainLooper())
+    private var isTimerRunning = false
 
     init {
         fetchUpcomingEvents()
@@ -83,6 +89,40 @@ class UpcomingEventsViewModel @Inject constructor(
         return list
     }
 
+    fun startTimers() {
+        if (isTimerRunning) return
+        isTimerRunning = true
+
+        val currentTime = System.currentTimeMillis()
+        uiList.forEach { sport ->
+            (sport as SportRowUiItem).events.forEach { event ->
+                val remainingTime = event.remainingTime - currentTime
+                if (remainingTime > 0) {
+                    event.remainingTime = remainingTime
+                }
+            }
+        }
+
+        handler.post(object : Runnable {
+            override fun run() {
+                uiList.forEach { sport ->
+                    (sport as SportRowUiItem).events.forEach { event ->
+                        if (event.remainingTime > 0) event.remainingTime -= 1000
+                    }
+                }
+                notifyDataSetChanged()
+                if (uiList.any
+                    { sport -> (sport as SportRowUiItem).events.any { it.remainingTime > 0 } }
+                ) {
+                    handler.postDelayed(this, 1000)
+                } else {
+                    isTimerRunning = false
+                }
+            }
+        })
+    }
+
+
     fun notifyDataSetChanged() {
         _upcomingEvents.value = uiList.toList()
     }
@@ -92,7 +132,8 @@ class UpcomingEventsViewModel @Inject constructor(
     }
 
     private fun sortFavorites(item: EventRowUiItem) {
-        val sport = uiList.firstOrNull { (it as SportRowUiItem).sportName == item.sportName }
+        val sport =
+            uiList.firstOrNull { (it as SportRowUiItem).sportName == item.sportName }
         sport?.let {
             val sportListIndex = uiList.indexOf(sport)
             if (sportListIndex != -1) {
@@ -102,7 +143,8 @@ class UpcomingEventsViewModel @Inject constructor(
                     if (it.isFavorite) favoriteList.add(it)
                     else nonFavoriteList.add(it)
                 }
-                (uiList[sportListIndex] as SportRowUiItem).events = favoriteList + nonFavoriteList
+                (uiList[sportListIndex] as SportRowUiItem).events =
+                    favoriteList + nonFavoriteList
                 _dataChangedIndex.value = sportListIndex
             }
         }
