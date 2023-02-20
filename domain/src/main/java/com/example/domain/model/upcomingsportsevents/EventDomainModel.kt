@@ -5,5 +5,5 @@ data class EventDomainModel(
     var eventId: String,
     var sportId: String,
     var sh: String,
-    var eventStartTime: String,
+    var eventStartTime: Long,
 )

@@ -11,7 +11,8 @@ data class SportRowUiItem(
 data class EventRowUiItem(
     val sportName: String,
     val eventName: String,
-    var remainingTime: String,
+    var startTime: Long,
+    var remainingTime: Long = 0L,
     var isFavorite: Boolean,
     val firstCompetitor: String,
     val secondCompetitor: String
