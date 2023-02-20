@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Typography -->
+    <style name="TextAppearance">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+    
+    <style name="TextAppearance.Title">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        
+    </style>
+
+    <style name="TextAppearance.Light">
+        <item name="fontFamily">sans-serif-light</item>
+    </style>
+</resources>
