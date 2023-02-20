@@ -2,7 +2,6 @@ package com.example.data.mapper
 
 import com.example.data.response.upcomingsportevents.Event
 import com.example.data.response.upcomingsportevents.Sports
-import com.example.data.utilities.DateUtils
 import com.example.domain.model.upcomingsportsevents.EventDomainModel
 import com.example.domain.model.upcomingsportsevents.SportsDomainModel
 
@@ -20,7 +19,7 @@ fun Event.mapToDomain(): EventDomainModel {
         eventId = eventId ?: "",
         sportId = sportId ?: "",
         sh = sh ?: "",
-        eventStartTime = DateUtils.getStringDate(eventStartTime) ?: ""
+        eventStartTime = eventStartTime?.let { it * 1000L } ?: System.currentTimeMillis()
     )
 }
 

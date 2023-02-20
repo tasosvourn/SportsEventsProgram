@@ -69,23 +69,18 @@ class UpcomingEventsViewModel @Inject constructor(
     ): List<EventRowUiItem> {
         val list = mutableListOf<EventRowUiItem>()
         eventsList.forEach { event ->
-            list.add(EventRowUiItem(
-                sportName = sportName,
-                eventName = event.sh,
-                remainingTime = event.eventStartTime,
-                isFavorite = false,
-                firstCompetitor = event.eventName.first,
-                secondCompetitor = event.eventName.second
-            ))
+            val currentTime = System.currentTimeMillis()
+            if (event.eventStartTime > currentTime)
+                list.add(EventRowUiItem(
+                    sportName = sportName,
+                    eventName = event.sh,
+                    startTime = event.eventStartTime,
+                    isFavorite = false,
+                    firstCompetitor = event.eventName.first,
+                    secondCompetitor = event.eventName.second
+                ))
         }
         return list
-    }
-
-    val eventHandler = object : EventEventHandler {
-        override fun onFavoriteClicked(eventClicked: EventRowUiItem, isChecked: Boolean) {
-            eventClicked.isFavorite = isChecked
-            sortFavorites(eventClicked)
-        }
     }
 
     fun notifyDataSetChanged() {
@@ -110,6 +105,13 @@ class UpcomingEventsViewModel @Inject constructor(
                 (uiList[sportListIndex] as SportRowUiItem).events = favoriteList + nonFavoriteList
                 _dataChangedIndex.value = sportListIndex
             }
+        }
+    }
+
+    val eventHandler = object : EventEventHandler {
+        override fun onFavoriteClicked(eventClicked: EventRowUiItem, isChecked: Boolean) {
+            eventClicked.isFavorite = isChecked
+            sortFavorites(eventClicked)
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.sportseventsprogram.features.upcomingevents.adapterdelegates
 
+import com.example.sportseventsprogram.utilities.DateUtils
 import com.example.sportseventsprogram.common.adapterdelegates.RowUiItem
 import com.example.sportseventsprogram.databinding.ItemEventBinding
 import com.example.sportseventsprogram.features.upcomingevents.EventRowUiItem
@@ -15,7 +16,7 @@ fun eventAdapterDelegate(eventClickHandler: EventEventHandler) =
     ) {
         bind {
             binding.apply {
-                countDownText.text = item.remainingTime
+                countDownText.text = DateUtils.getStringDate(item.startTime)
                 favoriteButton.setOnCheckedChangeListener(null)
                 favoriteButton.isChecked = item.isFavorite
                 favoriteButton.setOnCheckedChangeListener { _, isChecked ->

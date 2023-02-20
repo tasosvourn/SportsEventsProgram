@@ -1,4 +1,4 @@
-package com.example.data.utilities
+package com.example.sportseventsprogram.utilities
 
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -9,7 +9,7 @@ object DateUtils {
 
     fun getStringDate(timestamp: Long?): String? {
         timestamp?.let {
-            return SimpleDateFormat("dd/MM/yyyy", Locale.US).format(Date(it * 1000L))
+            return SimpleDateFormat("dd/MM/yyyy", Locale.US).format(Date(it))
         }
         return null
     }
