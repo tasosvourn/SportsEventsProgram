@@ -1,7 +1,7 @@
 package com.example.data.mapper
 
-import com.example.data.response.upcomingsportevents.Event
-import com.example.data.response.upcomingsportevents.Sports
+import com.example.data.model.upcomingsportevents.response.Event
+import com.example.data.model.upcomingsportevents.response.Sports
 import com.example.domain.model.upcomingsportsevents.EventDomainModel
 import com.example.domain.model.upcomingsportsevents.SportsDomainModel
 
