@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+/** Use case that makes the API call and passes the result Domain Model to the viewModel */
 class UpcomingSportsEventsUseCase @Inject constructor(private val upcomingSportsEventsRepository: UpcomingSportsEventsRepository) {
     operator fun invoke(): Flow<DomainResult<List<SportsDomainModel>>> = flow {
         when (val result = upcomingSportsEventsRepository.getUpcomingSportsEvents().first()) {

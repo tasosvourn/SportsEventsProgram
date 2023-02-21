@@ -1,4 +1,4 @@
-package com.example.data.response.upcomingsportevents
+package com.example.data.model.upcomingsportevents.response
 
 import com.google.gson.annotations.SerializedName
 
